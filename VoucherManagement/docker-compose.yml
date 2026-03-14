@@ -47,7 +47,7 @@ services:
     ports:
       - "34567:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - voucher-management-api
       - voucher-management-client
