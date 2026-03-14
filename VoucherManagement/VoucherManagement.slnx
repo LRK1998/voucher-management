@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Projektmappenelemente/">
+    <File Path=".env" />
+    <File Path="nginx.conf" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="VoucherManagement.Api/VoucherManagement.Api.csproj" />
+</Solution>

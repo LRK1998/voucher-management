@@ -1,0 +1,58 @@
+services:
+  voucher-management-api:
+    image: ${DOCKER_REGISTRY-}vouchermanagementapi
+    build:
+      context: .
+      dockerfile: VoucherManagement.Api/Dockerfile
+    depends_on:
+      - voucher-management-db
+    environment:
+      - ConnectionStrings__AppDbConnection=${ConnectionStrings__AppDbConnection}
+      - Auth0__Domain=${Auth0__Domain}
+      - Auth0__Audience=${Auth0__Audience}
+    volumes:
+      - ${BRANDING_PATH}:/app/Branding:ro
+      - ${PDF_TEMPLATE_PATH}:/app/PdfTemplates/voucher_template.pdf:ro
+    networks:
+      - voucher-management-network
+
+  voucher-management-client:
+    image: ${DOCKER_REGISTRY-}vouchermanagementclient
+    build:
+      context: ./VoucherManagement.Client
+      dockerfile: Dockerfile
+      args:
+        VITE_AUTH0_DOMAIN: ${Auth0__Domain}
+        VITE_AUTH0_CLIENT_ID: ${Auth0__ClientId}
+        VITE_AUTH0_AUDIENCE: ${Auth0__Audience}
+        VITE_AUTH0_SCOPE: ${Auth0__Scope}
+    depends_on:
+      - voucher-management-api
+    networks:
+      - voucher-management-network
+
+  voucher-management-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ${POSTGRES_DATA}:/var/lib/postgresql/data
+    networks:
+      - voucher-management-network
+
+  voucher-management-reverse-proxy:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - voucher-management-api
+      - voucher-management-client
+    networks:
+      - voucher-management-network
+
+networks:
+  voucher-management-network:
