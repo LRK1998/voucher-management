@@ -15,7 +15,7 @@ services:
       - ${PDF_TEMPLATE_PATH}:/app/PdfTemplates/voucher_template.pdf:ro
     networks:
       - voucher-management-network
-      - traefik
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.voucher-api.rule=Host(`${Traefik_Host}`) && PathPrefix(`/api`)"
@@ -39,7 +39,7 @@ services:
       - voucher-management-api
     networks:
       - voucher-management-network
-      - traefik
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.voucher-client.rule=Host(`${Traefik_Host}`)"
