@@ -42,7 +42,7 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.voucher-client.rule=Host(`${Traefik_Host}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.voucher-client.rule=Host(`${Traefik_Host}`)"
       - "traefik.http.routers.voucher-client.priority=1"
       - "traefik.http.services.voucher-client.loadbalancer.server.port=80"
 
