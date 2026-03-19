@@ -15,6 +15,15 @@ services:
       - ${PDF_TEMPLATE_PATH}:/app/PdfTemplates/voucher_template.pdf:ro
     networks:
       - voucher-management-network
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.voucher-api.rule=Host(`${Traefik_Host}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.voucher-api.priority=10"
+      - "traefik.http.services.voucher-api.loadbalancer.server.port=8080"
+      # nur nötig, wenn deine API KEIN /api im Routing hat:
+      #- "traefik.http.middlewares.voucher-api-strip.stripprefix.prefixes=/api"
+      #- "traefik.http.routers.voucher-api.middlewares=voucher-api-strip"
 
   voucher-management-client:
     image: ${DOCKER_REGISTRY-}vouchermanagementclient
@@ -30,6 +39,12 @@ services:
       - voucher-management-api
     networks:
       - voucher-management-network
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.voucher-client.rule=Host(`${Traefik_Host}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.voucher-client.priority=1"
+      - "traefik.http.services.voucher-client.loadbalancer.server.port=80"
 
   voucher-management-db:
     image: postgres:16-alpine
@@ -42,17 +57,7 @@ services:
     networks:
       - voucher-management-network
 
-  voucher-management-reverse-proxy:
-    image: nginx:alpine
-    ports:
-      - "34567:80"
-    volumes:
-      - ${NGINX_CONFIG}:/etc/nginx/nginx.conf
-    depends_on:
-      - voucher-management-api
-      - voucher-management-client
-    networks:
-      - voucher-management-network
-
 networks:
   voucher-management-network:
+  traefik:
+    external: true
