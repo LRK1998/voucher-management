@@ -44,7 +44,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.voucher-client.rule=Host(`${Traefik_Host}`)"
-      - "traefik.http.routers.voucher-client.priority=1"
+      - "traefik.http.routers.voucher-client.priority=20"
       - "traefik.http.routers.voucher-client.entrypoints=websecure"
       - "traefik.http.services.voucher-client.loadbalancer.server.port=80"
 
