@@ -22,6 +22,7 @@ services:
       - "traefik.http.routers.voucher-api.priority=10"
       - "traefik.http.routers.voucher-api.entrypoints=websecure"
       - "traefik.http.services.voucher-api.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
       # nur nötig, wenn deine API KEIN /api im Routing hat:
       #- "traefik.http.middlewares.voucher-api-strip.stripprefix.prefixes=/api"
       #- "traefik.http.routers.voucher-api.middlewares=voucher-api-strip"
@@ -47,6 +48,7 @@ services:
       - "traefik.http.routers.voucher-client.priority=20"
       - "traefik.http.routers.voucher-client.entrypoints=websecure"
       - "traefik.http.services.voucher-client.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
 
   voucher-management-db:
     image: postgres:16-alpine
