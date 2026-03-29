@@ -17,7 +17,7 @@
           </NavigationMenuItem>-->
           <NavigationMenuItem>
             <Button v-if="!isAuthenticated" @click="loginWithRedirect()" variant="ghost">Login</Button>
-            <Button v-else @click="logout()" variant="ghost" >Logout</Button>
+            <Button v-else @click="handleLogout()" variant="ghost" >Logout</Button>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -41,9 +41,11 @@ import { useAuth0 } from '@auth0/auth0-vue'
 const logoUrl = '/api/branding/logo.png';
 const { loginWithRedirect, logout, isAuthenticated, } = useAuth0()
 
-
-//function handleLogout() {
-//  auth.logout()
-//  router.push('/login') // oder eine andere Seite
-//}
+function handleLogout() {
+  logout({
+    logoutParams: {
+      returnTo: window.location.origin
+    }
+  })
+}
 </script>
