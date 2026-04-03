@@ -97,7 +97,6 @@ namespace VoucherManagement.Api.Controllers
         [Authorize(Policy = "ManageVouchers")]
         public async Task<ActionResult> GetVoucherPdf(int id)
         {
-
             await using var context = await _appDbContext.CreateDbContextAsync();
 
             var dbEntry = await context.Vouchers
@@ -105,8 +104,9 @@ namespace VoucherManagement.Api.Controllers
 
             if (dbEntry != null)
             {
+                var templateFilePath = Path.Combine(_voucherOptions.TemplatePath, "voucher_template.pdf");
                 var pdfBytes = VoucherHelper.GeneratePdfWithIText(dbEntry, 
-                    _voucherOptions.TemplatePath, 
+                    templateFilePath, 
                     _voucherOptions.PdfPage,
                     _voucherOptions.QrCodeSize,
                     _voucherOptions.FontSize,
