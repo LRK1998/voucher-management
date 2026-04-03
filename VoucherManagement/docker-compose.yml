@@ -12,7 +12,7 @@ services:
       - Auth0__Audience=${Auth0__Audience}
     volumes:
       - ${BRANDING_PATH}:/app/Branding:ro
-      - ${PDF_TEMPLATE_PATH}:/app/PdfTemplates/voucher_template.pdf:ro
+      - ${PDF_TEMPLATE_PATH}:/app/PdfTemplates:ro
     networks:
       - voucher-management-network
       - proxy
