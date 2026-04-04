@@ -1,6 +1,5 @@
 services:
   voucher-management-api:
-    image: ${DOCKER_REGISTRY-}vouchermanagementapi
     build:
       context: .
       dockerfile: VoucherManagement.Api/Dockerfile
@@ -29,7 +28,6 @@ services:
       #- "traefik.http.routers.voucher-api.middlewares=voucher-api-strip"
 
   voucher-management-client:
-    image: ${DOCKER_REGISTRY-}vouchermanagementclient
     build:
       context: ./VoucherManagement.Client
       dockerfile: Dockerfile
